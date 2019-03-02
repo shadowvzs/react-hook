@@ -1,26 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';     //useContext for context
 
 export default function Greetings(props) {
     console.log('render Greetings');
-    const [name, setName] = useState("Pista");
-    const [surname, setSurname] = useState("Nagy");
-    const [width, setWidth] = useState(window.innerWidth);
+    const name = useFormInput("Pista");
+    const surname = useFormInput("Nagy");
+    const width = useWindowWidth();
+    //const theme = useContext(ThemeContext);           //ThemeContext is imported from our context file
+    useDocumentTitle(name.value + ' ' + surname.value);
 
-    function handleNameChange(e) {
-        setName(e.target.value);
+    return (
+        <div>
+            <h1>{name.value}</h1>
+            <input
+                {...name}
+            />
+            <input
+                {...surname}
+            />
+            <small>{width}</small>            
+        </div>
+    );
+}
+
+function useFormInput(initValue) {
+    const [value, setValue] = useState(initValue);
+
+    function handleChange(e) {
+        setValue(e.target.value);
     }
 
-    function handleSurnameChange(e) {
-        setSurname(e.target.value);
+    return {
+        value,
+        onChange: handleChange
     }
+}
 
+function useDocumentTitle(title) {
     // by default it is equivalent with componentDidMount + componentDidUpdate together
     // useEffect is like subscribe
     useEffect(() => {
-        document.title = name + ' ' + surname; 
+        document.title = title; 
     });
+}
 
-    // we can separate lifecycle events depend what it do
+// this is a custom hooks which is reuseable and separated because we make simplier our Greetings function
+// custom hooks should have "use" name prefix (u can know if function name start with "use" then probabil got internal state)
+function useWindowWidth() {
+    const [width, setWidth] = useState(window.innerWidth);
     useEffect(() => {
         const resize = () => setWidth(window.innerWidth);
         window.addEventListener('resize', resize);
@@ -31,20 +57,5 @@ export default function Greetings(props) {
             window.removeEventListener('resize', resize);
         };
     });
-
-
-    return (
-        <div>
-            <h1>{name}</h1>
-            <input
-                value={name}
-                onChange={handleNameChange}
-            />
-            <input
-                value={surname}
-                onChange={handleSurnameChange}
-            />
-            <small>{width}</small>            
-        </div>
-    );
+    return width;
 }
