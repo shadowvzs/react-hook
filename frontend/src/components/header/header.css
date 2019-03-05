@@ -1,0 +1,17 @@
+body header {
+    padding: 10px 20px;
+    background: linear-gradient(to bottom, #ffa, #fff);
+    display: flex;
+    justify-content: space-between;
+}
+
+body header nav {
+    display: inline-block;
+}
+
+body header a {
+    padding: 10px 20px;
+    display: inline-block;
+    color: black;
+    border: 1px solid #000;
+}

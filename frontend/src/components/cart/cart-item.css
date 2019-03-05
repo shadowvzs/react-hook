@@ -1,0 +1,8 @@
+.cart-item {
+    display: flex;
+    padding: 20px;
+    border: 1px solid #000;
+    justify-content: space-between;
+    max-width: 400px;
+    margin: auto;
+}
